@@ -12,6 +12,7 @@ class TestCase:
         
     def run(self, result):
         result.testStarted()
+        
         try:
             self.setUp()
             method = getattr(self, self.name)

@@ -9,6 +9,13 @@ class TestCaseWithBrokenSetupMethod(TestCase):
     
     def testMethod1(self):
         pass
+    
+class TestClassWith2TestMethods(TestCase):
+    def testMethod1(self):
+        a = 1 + 1
+    
+    def testMethod2(self):
+        b = 2 + 2
 
 class TestCaseTest(TestCase):
     def setUp(self):
@@ -52,11 +59,19 @@ class TestCaseTest(TestCase):
         test = TestCaseWithBrokenSetupMethod("testMethod1")
         test.run(self.result)
         assert("1 run, 1 failed" == self.result.summary())
+        
+    def testSuiteFromClass(self):
+        # This test for Exercise 3 (rest of the ToDo list)
+        objectWithTests = TestClassWith2TestMethods("testMethod1")
+        suite = TestSuite().createSuiteFromTestClass(objectWithTests)
+        assert(len(suite.tests) == 2)
 
 result = TestResult()
 TestCaseTest("testFailedButSetupAndTeardown").run(result)
 print(result.summary())
 TestCaseTest("testFailedInSetup").run(result)
+print(result.summary())
+TestCaseTest("testSuiteFromClass").run(result)
 print(result.summary())
 #
 suite = TestSuite()
