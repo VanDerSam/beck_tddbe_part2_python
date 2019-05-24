@@ -3,6 +3,13 @@ from TestCase import TestCase
 from TestResult import TestResult
 from TestSuite import TestSuite
 
+class TestCaseWithBrokenSetupMethod(TestCase):
+    def setUp(self):
+        raise Exception
+    
+    def testMethod1(self):
+        pass
+
 class TestCaseTest(TestCase):
     def setUp(self):
         self.result = TestResult()
@@ -39,9 +46,17 @@ class TestCaseTest(TestCase):
         test = WasRun("testBrokenMethod")
         test.run(self.result)
         assert("setUp tearDown " == test.log)
+        
+    def testFailedInSetup(self):
+        # This test for Exercise 2 (rest of the ToDo list)
+        test = TestCaseWithBrokenSetupMethod("testMethod1")
+        test.run(self.result)
+        assert("1 run, 1 failed" == self.result.summary())
 
 result = TestResult()
 TestCaseTest("testFailedButSetupAndTeardown").run(result)
+print(result.summary())
+TestCaseTest("testFailedInSetup").run(result)
 print(result.summary())
 #
 suite = TestSuite()
