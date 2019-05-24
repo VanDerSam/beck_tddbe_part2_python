@@ -34,6 +34,16 @@ class TestCaseTest(TestCase):
         suite.run(self.result)
         assert("2 run, 1 failed" == self.result.summary())
         
+    def testFailedButSetupAndTeardown(self):
+        # This test for Exercise 1 (rest of the ToDo list)
+        test = WasRun("testBrokenMethod")
+        test.run(self.result)
+        assert("setUp tearDown " == test.log)
+
+result = TestResult()
+TestCaseTest("testFailedButSetupAndTeardown").run(result)
+print(result.summary())
+#
 suite = TestSuite()
 suite.add(TestCaseTest("testTemplateMethod"))
 suite.add(TestCaseTest("testResult"))
